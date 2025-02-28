@@ -2,14 +2,15 @@ import React from "react"
 import styled from "styled-components"
 
 const HeaderContainer = styled.div`
-    background-color: blue;
+    background-color: #E0E0E0;
+    border-bottom: 2px solid grey;
     height: 70px;
 `
 
 const Title = styled.div`
-    background-color: red;
     width: fit-content;
     margin: 20px;
+    font-size: 27px;
 `
 
 function Header(){
