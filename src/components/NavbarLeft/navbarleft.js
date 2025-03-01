@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple, faBoxesStacked, faMoneyBill, faMoneyBillTrendUp, faUserGroup, faBuilding, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const NavigationBar = styled.div`
     background-color: #E0E0E0;
@@ -12,10 +13,10 @@ const NavigationBar = styled.div`
     align-items: center;
     padding-top: 20px;
     border-right: 2px solid grey;
-    position: fixed; /* Fixa a navbar na tela */
-    top: 0; /* Alinha no topo da tela */
-    left: 0; /* Alinha à esquerda da tela */
-    z-index: 1000; /* Garante que a navbar fique acima de outros elementos */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 
     .nav-options {
         width: 130px;
@@ -28,6 +29,7 @@ const NavigationBar = styled.div`
         cursor: pointer;
         transition: all .4s ease;
         border-radius: 8px;
+        text-decoration: none;
     }
 
     .nav-options:hover {
@@ -39,34 +41,34 @@ const NavigationBar = styled.div`
 function NavbarLeft() {
     return (
         <NavigationBar>
-            <div className="nav-options">
+            <Link to="/home" className="nav-options">
                 <FontAwesomeIcon icon={faChartSimple} />
                 Dashboard
-            </div>
-            <div className="nav-options">
+            </Link>
+            <Link to="/produtos" className="nav-options">
                 <FontAwesomeIcon icon={faBoxesStacked} />
                 Produtos
-            </div>
-            <div className="nav-options">
+            </Link>
+            <Link to="/caixa" className="nav-options">
                 <FontAwesomeIcon icon={faCartShopping} />
                 Caixa
-            </div>
-            <div className="nav-options">
+            </Link>
+            <Link to="/entrada" className="nav-options">
                 <FontAwesomeIcon icon={faMoneyBillTrendUp} />
                 Entrada
-            </div>
-            <div className="nav-options">
+            </Link>
+            <Link to="/saida" className="nav-options">
                 <FontAwesomeIcon icon={faMoneyBill} />
                 Saída
-            </div>
-            <div className="nav-options">
+            </Link>
+            <Link to="/clientes" className="nav-options">
                 <FontAwesomeIcon icon={faUserGroup} />
                 Clientes
-            </div>
-            <div className="nav-options">
+            </Link>
+            <Link to="/fornecedores" className="nav-options">
                 <FontAwesomeIcon icon={faBuilding} />
                 Fornecedores
-            </div>
+            </Link>
         </NavigationBar>
     );
 }

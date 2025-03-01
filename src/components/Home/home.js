@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import NavbarLeft from "../NavbarLeft/navbarleft";
 import Header from "../Header/header.js";
 import Dashboard from "../DashBoard/dashboard.js";
+import Graphic from "../DashBoard/graphics.js";
 import styled from "styled-components";
 import { useUser } from "../LoginPage/UserContext.js";
 import './home.css';
@@ -75,11 +76,23 @@ export const Value = styled.div`
     font-weight: bold;
 `;
 
+const MainDashboard = styled.div`
+    display: flex;
+    gap: 20px;
+`
+
 const DashboardContent = styled.div`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-left: 55%;
     text-align: center;
+`
+
+const GraphicDashboard = styled.div`
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
 function Home() {
@@ -114,9 +127,14 @@ function Home() {
                         </Card>
                     </Line>
                 </MainContent>
+                <MainDashboard>
+                <GraphicDashboard>
+                    <Graphic />
+                </GraphicDashboard>
                 <DashboardContent>
                     <Dashboard />
                 </DashboardContent>
+                </MainDashboard>
             </Content>
         </Container>
     );
