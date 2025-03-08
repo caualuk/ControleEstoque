@@ -16,7 +16,7 @@ const Title = styled.div`
 function Header(){
     return(
         <HeaderContainer>
-            <Title>EC BEBIDAS E EMBALAGENS</Title>
+            <Title>Controle de Estoque</Title>
         </HeaderContainer>
     )
 }

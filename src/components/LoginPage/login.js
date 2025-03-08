@@ -26,25 +26,32 @@ const LoginContainer = styled.div`
         margin-bottom: 1.5rem;
         font-size: 1.5rem;
         color: #333;
+        text-align: center;
     }
 
     .input-group {
         margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
     }
 
     .input-group label {
-        margin-right: 0.5rem;
+        display: block;
+        margin-bottom: 0.5rem;
         color: #555;
+        font-weight: bold;
     }
 
     .input-group input {
         width: 100%;
-        padding: 0.5rem;
+        padding: 0.75rem;
         border: 1px solid #ddd;
         border-radius: 4px;
         font-size: 1rem;
+        transition: border-color 0.3s;
+    }
+
+    .input-group input:focus {
+        border-color: #007bff;
+        outline: none;
     }
 
     button {
@@ -57,16 +64,23 @@ const LoginContainer = styled.div`
         font-size: 1rem;
         cursor: pointer;
         transition: background-color 0.3s;
+        margin-top: 1rem;
     }
 
     button:hover {
         background-color: #0056b3;
     }
 
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
     .error-message {
         color: red;
         margin-top: 1rem;
         text-align: center;
+        font-size: 0.9rem;
     }
 `;
 
@@ -74,13 +88,23 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
     const navigate = useNavigate();
-    const { setUser } = useUser(); 
+    const { setUser } = useUser();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        if (!username || !password) {
+            setError('Por favor, preencha todos os campos.');
+            return;
+        }
+    
+        setIsLoading(true);
+        setError('');
+    
         try {
+            console.log("Enviando requisição para /login com:", { username, password }); // Log dos dados enviados
             const response = await fetch('http://localhost:5000/login', {
                 method: 'POST',
                 headers: {
@@ -88,12 +112,15 @@ function Login() {
                 },
                 body: JSON.stringify({ username, password })
             });
-
+    
+            console.log("Resposta recebida:", response); // Log da resposta
+    
             const data = await response.json();
-
+            console.log("Dados da resposta:", data); // Log dos dados da resposta
+    
             if (response.ok) {
                 const formattedUsername = username.charAt(0).toUpperCase() + username.slice(1);
-                setUser(formattedUsername)
+                setUser(formattedUsername);
                 navigate('/home');
             } else {
                 setError(data.message || 'Nome de usuário ou senha incorretos.');
@@ -101,6 +128,8 @@ function Login() {
         } catch (error) {
             console.error('Erro ao realizar o login:', error);
             setError('Erro ao conectar ao servidor.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -130,7 +159,9 @@ function Login() {
                                 required
                             />
                         </div>
-                        <button type="submit">Entrar</button>
+                        <button type="submit" disabled={isLoading}>
+                            {isLoading ? 'Carregando...' : 'Entrar'}
+                        </button>
                         {error && <p className="error-message">{error}</p>}
                     </form>
                 </div>

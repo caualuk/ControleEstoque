@@ -38,30 +38,56 @@ const ProfitTd = styled(Td)`
   color: green;
 `;
 
-function TabelaProdutos(){
-    const [products, setProducts] = useState([
-        { id: 1, notaFiscal: "123456", nome: "Produto A", precoComprado: 50, precoVendido: 80 },
-        { id: 2, notaFiscal: "789012", nome: "Produto B", precoComprado: 30, precoVendido: 55 },
-      ]);
+function TabelaProdutos() {
+  const [products, setProducts] = useState([
+    {
+      notaFiscal: "123456",
+      nome: "Produto A",
+      categoria: "Bebidas",
+      quantidade: 10,
+      unidade: "unidade",
+      fornecedor: "Fornecedor X",
+      precoComprado: 50,
+      precoVendido: 80,
+    },
+    {
+      notaFiscal: "789012",
+      nome: "Produto B",
+      categoria: "Embalagens",
+      quantidade: 20,
+      unidade: "pacote",
+      fornecedor: "Fornecedor Y",
+      precoComprado: 30,
+      precoVendido: 55,
+    },
+  ]);
 
-    return(
-        <Container>
+  return (
+    <Container>
       <Title>Controle de Estoque</Title>
       <Table>
         <Thead>
           <tr>
             <Th>Nota Fiscal</Th>
             <Th>Nome</Th>
+            <Th>Categoria</Th>
+            <Th>Quantidade</Th>
+            <Th>Unidade</Th>
+            <Th>Fornecedor</Th>
             <Th>Preço Comprado</Th>
             <Th>Preço Vendido</Th>
             <Th>Lucro</Th>
           </tr>
         </Thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
+          {products.map((product, index) => (
+            <tr key={index}>
               <Td>{product.notaFiscal}</Td>
               <Td>{product.nome}</Td>
+              <Td>{product.categoria}</Td>
+              <Td>{product.quantidade}</Td>
+              <Td>{product.unidade}</Td>
+              <Td>{product.fornecedor}</Td>
               <Td>R$ {product.precoComprado.toFixed(2)}</Td>
               <Td>R$ {product.precoVendido.toFixed(2)}</Td>
               <ProfitTd>R$ {(product.precoVendido - product.precoComprado).toFixed(2)}</ProfitTd>
@@ -70,7 +96,7 @@ function TabelaProdutos(){
         </tbody>
       </Table>
     </Container>
-    )
+  );
 }
 
 export default TabelaProdutos;

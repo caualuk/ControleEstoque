@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# Ignora o arquivo de configuração do Firebase
+backend/serviceAccountKey.json
+
 # testing
 /coverage
 
