@@ -64,7 +64,7 @@ function TabelaProdutos() {
 
   return (
     <Container>
-      <Title>Controle de Estoque</Title>
+      <Title>Controle de Estoque rapaz</Title>
       <Table>
         <Thead>
           <tr>
