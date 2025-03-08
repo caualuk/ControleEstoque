@@ -5,8 +5,9 @@
 /.pnp
 .pnp.js
 
-# Ignora o arquivo de configuração do Firebase
+# Ignora arquivos de credenciais do Firebase
 backend/serviceAccountKey.json
+backend/deposito-f5485-firebase-adminsdk-fbsvc-7185f7ab3e.json
 
 # testing
 /coverage
