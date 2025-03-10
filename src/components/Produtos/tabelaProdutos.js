@@ -1,4 +1,6 @@
-import { useState } from "react"
+import { db } from "../../firebase";
+import { collection, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -39,28 +41,28 @@ const ProfitTd = styled(Td)`
 `;
 
 function TabelaProdutos() {
-  const [products, setProducts] = useState([
-    {
-      notaFiscal: "123456",
-      nome: "Produto A",
-      categoria: "Bebidas",
-      quantidade: 10,
-      unidade: "unidade",
-      fornecedor: "Fornecedor X",
-      precoComprado: 50,
-      precoVendido: 80,
-    },
-    {
-      notaFiscal: "789012",
-      nome: "Produto B",
-      categoria: "Embalagens",
-      quantidade: 20,
-      unidade: "pacote",
-      fornecedor: "Fornecedor Y",
-      precoComprado: 30,
-      precoVendido: 55,
-    },
-  ]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Escuta mudanças na coleção "products" em tempo real
+    const unsubscribe = onSnapshot(collection(db, "products"), (querySnapshot) => {
+      const productsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        notaFiscal: doc.data().cb || "N/A",
+        nome: doc.data().productName || "N/A",
+        categoria: doc.data().category || "N/A",
+        quantidade: doc.data().quantity || 0,
+        unidade: doc.data().unit || "N/A",
+        fornecedor: doc.data().supplier || "N/A",
+        precoComprado: parseFloat(doc.data().purchasePrice) || 0,
+        precoVendido: parseFloat(doc.data().salePrice) || 0,
+      }));
+      setProducts(productsData);
+    });
+
+    // Limpa o listener ao desmontar o componente
+    return () => unsubscribe();
+  }, []);
 
   return (
     <Container>
@@ -90,7 +92,9 @@ function TabelaProdutos() {
               <Td>{product.fornecedor}</Td>
               <Td>R$ {product.precoComprado.toFixed(2)}</Td>
               <Td>R$ {product.precoVendido.toFixed(2)}</Td>
-              <ProfitTd>R$ {(product.precoVendido - product.precoComprado).toFixed(2)}</ProfitTd>
+              <ProfitTd>
+                R$ {(product.precoVendido - product.precoComprado).toFixed(2)}
+              </ProfitTd>
             </tr>
           ))}
         </tbody>
