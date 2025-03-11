@@ -3,6 +3,7 @@ import React, { useState } from "react";
 const ProductFormModal = ({ barcode, onClose, onSubmit }) => {
     const [productData, setProductData] = useState({
         productName: '',
+        stock: '',
         category: '',
         quantity: 0,
         unit: 'unid',
@@ -32,6 +33,9 @@ const ProductFormModal = ({ barcode, onClose, onSubmit }) => {
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="productName">Nome do Produto:</label>
                     <input type="text" id="productName" name="productName" value={productData.productName} onChange={handleChange} required />
+
+                    <label htmlFor="stock">Estoque:</label>
+                    <input type="text" id="stock" name="stock" value={productData.stock} onChange={handleChange} required />
 
                     <label htmlFor="category">Categoria:</label>
                     <input type="text" id="category" name="category" value={productData.category} onChange={handleChange} required />

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import BarcodeScannerPesq from "../PesquisarProd/pesProd"; // Importa o componente de leitura de código de barras
+import BarcodeScannerPesq from "../PesquisarProd/pesProd"; 
 import styled from "styled-components";
 import NavbarLeft from "../NavbarLeft/navbarleft";
 import Header from "../Header/header";
+import { db } from "../../firebase"; 
+import { query, collection, where, getDocs, updateDoc } from "firebase/firestore"; 
 
 const Container = styled.div`
     display: flex;
@@ -23,14 +25,12 @@ const ContentContainer = styled.div`
     flex-direction: column;
 `;
 
-// Estilos para o título
 const Title = styled.h1`
     font-size: 28px;
     color: #333;
     margin: 0; /* Remove a margem padrão */
 `;
 
-// Estilos para o botão
 const StartSaleButton = styled.button`
     background-color: #28a745;
     color: white;
@@ -54,7 +54,6 @@ const HeaderCaixa = styled.div`
     margin-bottom: 20px; /* Espaçamento abaixo do header */
 `;
 
-// Estilos para a tabela
 const ProductTable = styled.table`
     width: 100%;
     border-collapse: collapse;
@@ -89,7 +88,21 @@ const TableCell = styled.td`
     border: 1px solid #ddd; /* Adiciona borda às células */
 `;
 
-// Estilos para o total da venda
+const QuantityInput = styled.input`
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+`;
+
 const TotalSale = styled.h3`
     font-size: 20px;
     color: #333;
@@ -98,29 +111,125 @@ const TotalSale = styled.h3`
     padding-right: 20px;
 `;
 
+const FinalizeSaleButton = styled.button`
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+`;
+
 const Caixa = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a abertura do modal
-    const [barcode, setBarcode] = useState(""); // Estado para armazenar o código de barras digitado
-    const [saleProducts, setSaleProducts] = useState([]); // Estado para armazenar os produtos da venda
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [barcode, setBarcode] = useState("");
+    const [saleProducts, setSaleProducts] = useState([]);
 
     // Função para abrir o modal
     const handleStartSale = () => {
-        setIsModalOpen(true); // Abre o modal
-        setBarcode(""); // Limpa o código de barras anterior
+        setIsModalOpen(true);
+        setBarcode("");
     };
 
     // Função para fechar o modal
     const handleCloseModal = () => {
-        setIsModalOpen(false); // Fecha o modal
+        setIsModalOpen(false);
     };
 
     // Função para adicionar um produto à lista de venda
     const addProductToSale = (product) => {
-        setSaleProducts([...saleProducts, product]); // Adiciona o produto à lista
+        setSaleProducts([...saleProducts, { ...product, quantity: 1 }]); 
+    };
+
+    // Função para atualizar a quantidade de um produto na lista de venda
+    const handleQuantityChange = (index, newQuantity) => {
+        const updatedProducts = [...saleProducts];
+        updatedProducts[index].quantity = newQuantity;
+        setSaleProducts(updatedProducts);
+    };
+
+    // Função para finalizar a venda e atualizar o estoque no Firestore
+    const handleFinalizeSale = async () => {
+        try {
+            console.log("Iniciando finalização da venda...");
+    
+            // Verifica se há produtos na lista de venda
+            if (saleProducts.length === 0) {
+                alert("Nenhum produto na lista de venda!");
+                return;
+            }
+    
+            for (const product of saleProducts) {
+                console.log("Verificando produto:", product);
+    
+                // Verifica se o produto tem um código de barras válido
+                if (!product.cb) {
+                    console.error("Produto sem código de barras válido:", product);
+                    alert(`Produto "${product.productName}" não tem um código de barras válido!`);
+                    return;
+                }
+    
+                // Verifica se a quantidade solicitada é maior que o estoque
+                if (product.quantity > product.stock) {
+                    alert(`Produto "${product.productName}" insuficiente no estoque!`);
+                    return;
+                }
+            }
+    
+            console.log("Todos os produtos têm estoque suficiente. Atualizando estoque no Firestore...");
+    
+            // Atualiza o estoque no Firestore para cada produto
+            for (const product of saleProducts) {
+                console.log("Atualizando produto:", product);
+    
+                // Busca o produto no Firestore pelo código de barras (cb)
+                const q = query(collection(db, "products"), where("cb", "==", product.cb));
+                const querySnapshot = await getDocs(q);
+    
+                if (!querySnapshot.empty) {
+                    // Pega o primeiro documento encontrado (assumindo que o código de barras é único)
+                    const productDoc = querySnapshot.docs[0];
+                    const productData = productDoc.data();
+                    console.log("Documento do produto encontrado:", productData);
+    
+                    const currentStock = productData.stock; // Obtém o estoque atual
+                    console.log("Estoque atual:", currentStock);
+    
+                    const newStock = currentStock - product.quantity; // Calcula o novo estoque
+                    console.log("Novo estoque:", newStock);
+    
+                    // Atualiza o estoque no Firestore
+                    await updateDoc(productDoc.ref, {
+                        stock: newStock,
+                    });
+                    console.log("Estoque atualizado com sucesso!");
+                } else {
+                    console.error(`Produto com código de barras ${product.cb} não encontrado no Firestore.`);
+                    alert(`Produto "${product.productName}" não encontrado no banco de dados!`);
+                    return;
+                }
+            }
+    
+            alert("Venda finalizada e estoque atualizado com sucesso!");
+            setSaleProducts([]); // Limpa a lista de produtos da venda
+        } catch (error) {
+            console.error("Erro ao finalizar a venda:", error);
+            alert("Erro ao finalizar a venda.");
+        }
     };
 
     // Calcula o total da venda
-    const totalSale = saleProducts.reduce((total, product) => total + (Number(product.salePrice) || 0), 0);
+    const totalSale = saleProducts.reduce(
+        (total, product) => total + (Number(product.salePrice) || 0) * (product.quantity || 1),
+        0
+    );
 
     return (
         <Container>
@@ -150,6 +259,7 @@ const Caixa = () => {
                             <tr>
                                 <TableHeader>Nome</TableHeader>
                                 <TableHeader>Preço (R$)</TableHeader>
+                                <TableHeader>Quantidade</TableHeader>
                                 <TableHeader>Código de Barras</TableHeader>
                             </tr>
                         </thead>
@@ -160,6 +270,17 @@ const Caixa = () => {
                                     <TableCell>
                                         {product.salePrice ? Number(product.salePrice).toFixed(2) : "Preço não disponível"}
                                     </TableCell>
+                                    <TableCell>
+                                        <QuantityInput
+                                            type="number"
+                                            min="1"
+                                            max={product.stock} // Define o valor máximo como o estoque disponível
+                                            value={product.quantity || 1}
+                                            onChange={(e) =>
+                                                handleQuantityChange(index, parseInt(e.target.value))
+                                            }
+                                        />
+                                    </TableCell>
                                     <TableCell>{product.cb}</TableCell>
                                 </TableRow>
                             ))}
@@ -168,6 +289,11 @@ const Caixa = () => {
 
                     {/* Exibe o total da venda */}
                     <TotalSale>Total da Venda: R$ {totalSale.toFixed(2)}</TotalSale>
+
+                    {/* Botão para finalizar a venda */}
+                    <FinalizeSaleButton onClick={handleFinalizeSale}>
+                        Finalizar Venda
+                    </FinalizeSaleButton>
                 </ContentContainer>
             </Content>
         </Container>

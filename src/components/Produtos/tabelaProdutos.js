@@ -50,6 +50,7 @@ function TabelaProdutos() {
         id: doc.id,
         notaFiscal: doc.data().cb || "N/A",
         nome: doc.data().productName || "N/A",
+        estoque: doc.data().stock || "N/A",
         categoria: doc.data().category || "N/A",
         quantidade: doc.data().quantity || 0,
         unidade: doc.data().unit || "N/A",
@@ -72,6 +73,7 @@ function TabelaProdutos() {
           <tr>
             <Th>Nota Fiscal</Th>
             <Th>Nome</Th>
+            <Th>Estoque</Th>
             <Th>Categoria</Th>
             <Th>Quantidade</Th>
             <Th>Unidade</Th>
@@ -86,6 +88,7 @@ function TabelaProdutos() {
             <tr key={index}>
               <Td>{product.notaFiscal}</Td>
               <Td>{product.nome}</Td>
+              <Td>{product.estoque}</Td>
               <Td>{product.categoria}</Td>
               <Td>{product.quantidade}</Td>
               <Td>{product.unidade}</Td>
