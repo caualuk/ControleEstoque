@@ -3,7 +3,7 @@ import NavbarLeft from "../NavbarLeft/navbarleft";
 import Header from "../Header/header";
 import TabelaProdutos from "./tabelaProdutos";
 import ActionCard from "./ActionCard";
-import BarcodeScannerModal from "../ScannerCB/ScannerCB";
+import AddProduto from "../AdicionarProduto/addProd.js";
 import ProductFormModal from "../FormsModalProd/ModalForm";
 import styled from "styled-components";
 import './produtos.css';
@@ -65,14 +65,13 @@ function Produtos() {
                 <Header />
                 <LineActions>
                     <ActionCard icon="plus" label="Adicionar produtos" onClick={openModal} />
-                    <ActionCard icon="eye" label="Ver produtos" />
                     <ActionCard icon="trash" label="Excluir Produtos" />
                     <ActionCard icon="magnifying-glass" label="Pesquisar produtos" />
                 </LineActions>
 
                 {isModalOpen && (
                     step === 1 ? (
-                        <BarcodeScannerModal
+                        <AddProduto
                             barcode={barcode}
                             setBarcode={setBarcode}
                             onClose={closeModal}

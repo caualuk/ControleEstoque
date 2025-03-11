@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../firebase"; // Importe o Firestore configurado
+import { db } from "../../firebase.js"; // Importe o Firestore configurado
 import ProductFormModal from "../FormsModalProd/ModalForm.js";
 
 const BarcodeScannerModal = ({ barcode, setBarcode, onClose }) => {

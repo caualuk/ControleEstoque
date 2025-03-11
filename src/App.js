@@ -4,6 +4,7 @@ import { UserProvider } from './components/LoginPage/UserContext';
 import Login from './components/LoginPage/login.js';
 import Home from './components/Home/home.js';
 import Produtos from './components/Produtos/produtos.js';
+import Caixa from './components/Caixa/caixa.js';
 import './index.css'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
                     <Route path="/" element={<Login />} />
                     <Route path="/home" element={<Home />} />
                     <Route path="/produtos" element={<Produtos />} />
+                    <Route path="/caixa" element={<Caixa />} />
                 </Routes>
             </Router>
         </UserProvider>
