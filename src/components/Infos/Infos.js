@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import styled from "styled-components";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase"
+import { calcularVendasDaSemana, calcularVendasDoMes } from "../CalcularVendas/calcularVendas";
 
 export const Line = styled.div`
     display: flex;
@@ -52,21 +53,31 @@ export const Value = styled.div`
 `;
 
 function Infos(){
-    const [totalVendas, setTotalVendas] = useState(0);
+    const [totalDia, setTotalDia] = useState(0);
+    const [totalSemana, setTotalSemana] = useState(0);
+    const [totalMes, setTotalMes] = useState(0);
 
     useEffect(() => {
+        // Obtém a data atual no formato YYYY-MM-DD
         const dataAtual = new Date().toISOString().split('T')[0];
 
-        // Referência ao documento do dia atual na coleção "dailySales"
+        // Referência ao documento do dia atual na coleção "vendas_diarias"
         const docRef = doc(db, "dailySales", dataAtual);
 
         // Escuta as mudanças no documento em tempo real
-        const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        const unsubscribe = onSnapshot(docRef, async (docSnap) => {
         if (docSnap.exists()) {
-            setTotalVendas(docSnap.data().total);
+            setTotalDia(docSnap.data().total);
         } else {
-            setTotalVendas(0); // Se o documento não existir, define o total como 0
+            setTotalDia(0); // Se o documento não existir, define o total como 0
         }
+
+        // Atualiza os totais da semana e do mês
+        const totalSemana = await calcularVendasDaSemana();
+        const totalMes = await calcularVendasDoMes();
+
+        if (totalSemana !== null) setTotalSemana(totalSemana);
+        if (totalMes !== null) setTotalMes(totalMes);
         });
 
         // Limpa o listener quando o componente é desmontado
@@ -77,7 +88,7 @@ function Infos(){
         <Line>
             <Card color="green">
                 <Title>Vendas de Hoje</Title>
-                <Value>{totalVendas.toFixed(2)}</Value>
+                <Value>{totalDia.toFixed(2)}</Value>
             </Card>
             <Card color="red">
                 <Title>Para Pagar</Title>
@@ -89,7 +100,7 @@ function Infos(){
             </Card>
             <Card color="teal">
                 <Title>Faturamento do Mês</Title>
-                <Value>R$ 97.234,90</Value>
+                <Value>R$ {totalMes.toFixed(4)}</Value>
             </Card>
         </Line>
     )
