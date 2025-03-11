@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase"
 
 export const Line = styled.div`
     display: flex;
@@ -50,11 +52,32 @@ export const Value = styled.div`
 `;
 
 function Infos(){
+    const [totalVendas, setTotalVendas] = useState(0);
+
+    useEffect(() => {
+        const dataAtual = new Date().toISOString().split('T')[0];
+
+        // Referência ao documento do dia atual na coleção "dailySales"
+        const docRef = doc(db, "dailySales", dataAtual);
+
+        // Escuta as mudanças no documento em tempo real
+        const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+            setTotalVendas(docSnap.data().total);
+        } else {
+            setTotalVendas(0); // Se o documento não existir, define o total como 0
+        }
+        });
+
+        // Limpa o listener quando o componente é desmontado
+        return () => unsubscribe();
+    }, []);
+    
     return(
         <Line>
             <Card color="green">
                 <Title>Vendas de Hoje</Title>
-                <Value>R$ 7.896,89</Value>
+                <Value>{totalVendas.toFixed(2)}</Value>
             </Card>
             <Card color="red">
                 <Title>Para Pagar</Title>

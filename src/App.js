@@ -5,6 +5,8 @@ import Login from './components/LoginPage/login.js';
 import Home from './components/Home/home.js';
 import Produtos from './components/Produtos/produtos.js';
 import Caixa from './components/Caixa/caixa.js';
+import Entrada from './components/Entrada/entradaVendas.js';
+import NavbarLeft from './components/NavbarLeft/navbarleft.js';
 import './index.css'
 
 function App() {
@@ -16,6 +18,7 @@ function App() {
                     <Route path="/home" element={<Home />} />
                     <Route path="/produtos" element={<Produtos />} />
                     <Route path="/caixa" element={<Caixa />} />
+                    <Route path="/entrada" element={<Entrada />} />
                 </Routes>
             </Router>
         </UserProvider>

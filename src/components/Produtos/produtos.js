@@ -58,6 +58,7 @@ function Produtos() {
         closeModal();
     };
 
+
     return (
         <Container>
             <NavbarLeft />

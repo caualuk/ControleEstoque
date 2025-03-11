@@ -4,7 +4,7 @@ import styled from "styled-components";
 import NavbarLeft from "../NavbarLeft/navbarleft";
 import Header from "../Header/header";
 import { db } from "../../firebase"; 
-import { query, collection, where, getDocs, updateDoc } from "firebase/firestore"; 
+import { query, collection, where, getDocs, updateDoc, setDoc, increment, doc } from "firebase/firestore"; 
 
 const Container = styled.div`
     display: flex;
@@ -155,6 +155,26 @@ const Caixa = () => {
         setSaleProducts(updatedProducts);
     };
 
+    const registrarVendaDiaria = async (valorVenda) => {
+        try {
+          // Obtém a data atual no formato YYYY-MM-DD
+          const dataAtual = new Date().toISOString().split('T')[0];
+      
+          // Referência ao documento do dia atual na coleção "dailySales"
+          const docRef = doc(db, "dailySales", dataAtual);
+      
+          // Atualiza o total do dia (incrementa o valor da venda)
+          await setDoc(docRef, {
+            total: increment(valorVenda),
+            data: dataAtual,
+          }, { merge: true });
+      
+          console.log("Venda registrada com sucesso!");
+        } catch (error) {
+          console.error("Erro ao registrar venda diária:", error);
+        }
+      };
+
     // Função para finalizar a venda e atualizar o estoque no Firestore
     const handleFinalizeSale = async () => {
         try {
@@ -216,6 +236,8 @@ const Caixa = () => {
                     return;
                 }
             }
+
+            await registrarVendaDiaria(totalSale);
     
             alert("Venda finalizada e estoque atualizado com sucesso!");
             setSaleProducts([]); // Limpa a lista de produtos da venda
