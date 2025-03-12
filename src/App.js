@@ -9,10 +9,7 @@ import Pagamentos from './components/Pagamentos/pagamentos.js';
 import NavbarLeft from './components/NavbarLeft/navbarleft.js';
 import Recebimentos from './components/Receber/recebimentos.js';
 import Header from './components/Header/header.js'; 
-import Clientes from './components/Clientes/clientes.js';
 import Fornecedores from './components/Fornecedores/fornecedores.js';
-import { ClientesProvider } from './components/ClientesProvider/ClientesProvider.js';
-import { ValorTotalProvider } from './components/ClientesProvider/valorTotalContext.js'; // Importe o ValorTotalProvider
 import './index.css';
 
 const Layout = ({ children }) => {
@@ -30,22 +27,17 @@ const Layout = ({ children }) => {
 function App() {
     return (
         <UserProvider>
-            <ClientesProvider>
-                <ValorTotalProvider> 
-                    <Router>
-                        <Routes>
-                            <Route path="/" element={<Login />} />
-                            <Route path="/home" element={<Layout><Home /></Layout>} />
-                            <Route path="/produtos" element={<Layout><Produtos /></Layout>} />
-                            <Route path="/caixa" element={<Layout><Caixa /></Layout>} />
-                            <Route path="/entrada" element={<Layout><Recebimentos /></Layout>} />
-                            <Route path="/saida" element={<Layout><Pagamentos /></Layout>} />
-                            <Route path="/clientes" element={<Layout><Clientes /></Layout>} />
-                            <Route path="/fornecedores" element={<Layout><Fornecedores /></Layout>} />
-                        </Routes>
-                    </Router>
-                </ValorTotalProvider>
-            </ClientesProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="/home" element={<Layout><Home /></Layout>} />
+                    <Route path="/produtos" element={<Layout><Produtos /></Layout>} />
+                    <Route path="/caixa" element={<Layout><Caixa /></Layout>} />
+                    <Route path="/entrada" element={<Layout><Recebimentos /></Layout>} />
+                    <Route path="/saida" element={<Layout><Pagamentos /></Layout>} />
+                    <Route path="/fornecedores" element={<Layout><Fornecedores /></Layout>} />
+                </Routes>
+            </Router>
         </UserProvider>
     );
 }

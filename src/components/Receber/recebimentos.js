@@ -4,10 +4,10 @@ import { db } from '../../firebase';
 import { collection, addDoc, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
 import { RecebimentosContext } from './recebimentosContext.js';
 import { ValorTotalContext } from '../ClientesProvider/valorTotalContext.js';
-import { useClientes } from '../ClientesProvider/ClientesProvider.js';
 import styled from 'styled-components';
 import './styledrcb.css';
 
+// Estilos com styled-components
 const Container = styled.div`
     display: flex;
     height: 100vh;
@@ -68,6 +68,7 @@ const Value = styled.div`
     font-weight: bold;
 `;
 
+// Componente principal
 const Recebimentos = () => {
   const [recebimentos, setRecebimentos] = useState([]);
   const [novoRecebimento, setNovoRecebimento] = useState({ tipo: '', descricao: '', valor: '' });
@@ -77,6 +78,7 @@ const Recebimentos = () => {
 
   const recebimentosCollectionRef = collection(db, 'recebimentos');
 
+  // Carrega os recebimentos do Firestore
   const carregarRecebimentos = async () => {
     const data = await getDocs(recebimentosCollectionRef);
     const recebimentosData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
@@ -84,21 +86,25 @@ const Recebimentos = () => {
     calcularValorTotal(recebimentosData);
   };
 
+  // Calcula o valor total dos recebimentos
   const calcularValorTotal = (recebimentos) => {
     const total = recebimentos.reduce((acc, recebimento) => acc + parseFloat(recebimento.valor), 0);
     setValorTotalRecebimentos(total);
     setValorTotalGeral(total); // Atualiza o valorTotalGeral no contexto
   };
 
+  // Carrega os recebimentos ao montar o componente
   useEffect(() => {
     carregarRecebimentos();
   }, []);
 
+  // Atualiza o estado novoRecebimento conforme o usuário digita
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNovoRecebimento({ ...novoRecebimento, [name]: value });
   };
 
+  // Adiciona um cliente à coleção de clientes no Firestore
   const adicionarCliente = async (nomeCliente) => {
     const clientesCollectionRef = collection(db, 'clientes');
 
@@ -113,6 +119,7 @@ const Recebimentos = () => {
     }
   };
 
+  // Adiciona um novo recebimento ao Firestore
   const adicionarRecebimento = async () => {
     if (novoRecebimento.tipo && novoRecebimento.descricao && novoRecebimento.valor) {
       // Adiciona o recebimento
@@ -129,6 +136,7 @@ const Recebimentos = () => {
     }
   };
 
+  // Remove um recebimento do Firestore
   const removerRecebimento = async (id) => {
     const recebimentoDoc = doc(db, 'recebimentos', id);
     await deleteDoc(recebimentoDoc);
@@ -141,7 +149,7 @@ const Recebimentos = () => {
             <Line>
                 <Card color="blue">
                     <Title>Para Receber</Title>
-                    <Value>R$ {valorTotalGeral !== undefined && valorTotalGeral !== null ? valorTotalGeral.toFixed(2) : '0.00'}</Value>
+                    <Value>R$ {valorTotalRecebimentos.toFixed(2)}</Value> {/* Exibe o valor total dos recebimentos */}
                 </Card>
             </Line>
 

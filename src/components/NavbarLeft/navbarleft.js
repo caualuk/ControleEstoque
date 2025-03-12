@@ -61,10 +61,6 @@ function NavbarLeft() {
                 <FontAwesomeIcon icon={faMoneyBill} />
                 Gastos
             </Link>
-            <Link to="/clientes" className="nav-options">
-                <FontAwesomeIcon icon={faUserGroup} />
-                Clientes
-            </Link>
             <Link to="/fornecedores" className="nav-options">
                 <FontAwesomeIcon icon={faBuilding} />
                 Fornecedores
