@@ -9,6 +9,11 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
+const timestamp = admin.firestore.Timestamp.now();
+const date = timestamp.toDate();
+
+console.log(date.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+
 const db = admin.firestore();
 const app = express();
 const port = 5000;

@@ -55,9 +55,7 @@ function Home() {
 
     return (
         <Container>
-            <NavbarLeft /> {/* Navbar à esquerda */}
             <Content>
-                <Header /> {/* Header no topo */}
                 <MainContent>
                     <Infos />
                 </MainContent>

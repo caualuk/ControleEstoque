@@ -11,6 +11,7 @@ const Title = styled.div`
     width: fit-content;
     margin: 20px;
     font-size: 27px;
+    margin-left: 50%;
 `
 
 function Header(){

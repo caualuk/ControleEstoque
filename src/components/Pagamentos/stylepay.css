@@ -1,0 +1,90 @@
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.formulario {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.formulario input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.button-add{
+  background-color: red;
+}
+
+.formulario input:focus {
+  border-color: #ff0000;
+  outline: none;
+}
+
+.formulario button {
+  padding: 10px 20px;
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.formulario button:hover {
+  background-color: #b30000;
+}
+
+.tabela-gastos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.tabela-gastos th,
+.tabela-gastos td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabela-gastos th {
+  background-color: #ff0000;
+  color: white;
+}
+
+.tabela-gastos tr:hover {
+  background-color: #f1f1f1;
+}
+
+.tabela-gastos button {
+  padding: 5px 10px;
+  background-color: #f10b0b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.tabela-gastos button:hover {
+  background-color: #c82333;
+}

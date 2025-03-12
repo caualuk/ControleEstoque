@@ -61,9 +61,7 @@ function Produtos() {
 
     return (
         <Container>
-            <NavbarLeft />
             <Content>
-                <Header />
                 <LineActions>
                     <ActionCard icon="plus" label="Adicionar produtos" onClick={openModal} />
                     <ActionCard icon="trash" label="Excluir Produtos" />

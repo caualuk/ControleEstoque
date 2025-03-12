@@ -1,8 +1,10 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase"
+import { db } from "../../firebase";
 import { calcularVendasDaSemana, calcularVendasDoMes } from "../CalcularVendas/calcularVendas";
+import { GastosContext } from '../Pagamentos/pagamentosContext'; // Contexto de gastos
+import { RecebimentosContext } from '../Receber/recebimentosContext'; // Contexto de recebimentos
 
 export const Line = styled.div`
     display: flex;
@@ -52,10 +54,12 @@ export const Value = styled.div`
     font-weight: bold;
 `;
 
-function Infos(){
+function Infos() {
     const [totalDia, setTotalDia] = useState(0);
     const [totalSemana, setTotalSemana] = useState(0);
     const [totalMes, setTotalMes] = useState(0);
+    const { valorTotalDespesas } = useContext(GastosContext); // Contexto de gastos
+    const { valorTotalRecebimentos } = useContext(RecebimentosContext); // Contexto de recebimentos
 
     useEffect(() => {
         // Obtém a data atual no formato YYYY-MM-DD
@@ -66,25 +70,25 @@ function Infos(){
 
         // Escuta as mudanças no documento em tempo real
         const unsubscribe = onSnapshot(docRef, async (docSnap) => {
-        if (docSnap.exists()) {
-            setTotalDia(docSnap.data().total);
-        } else {
-            setTotalDia(0); // Se o documento não existir, define o total como 0
-        }
+            if (docSnap.exists()) {
+                setTotalDia(docSnap.data().total);
+            } else {
+                setTotalDia(0); // Se o documento não existir, define o total como 0
+            }
 
-        // Atualiza os totais da semana e do mês
-        const totalSemana = await calcularVendasDaSemana();
-        const totalMes = await calcularVendasDoMes();
+            // Atualiza os totais da semana e do mês
+            const totalSemana = await calcularVendasDaSemana();
+            const totalMes = await calcularVendasDoMes();
 
-        if (totalSemana !== null) setTotalSemana(totalSemana);
-        if (totalMes !== null) setTotalMes(totalMes);
+            if (totalSemana !== null) setTotalSemana(totalSemana);
+            if (totalMes !== null) setTotalMes(totalMes);
         });
 
         // Limpa o listener quando o componente é desmontado
         return () => unsubscribe();
     }, []);
-    
-    return(
+
+    return (
         <Line>
             <Card color="green">
                 <Title>Vendas de Hoje</Title>
@@ -92,18 +96,18 @@ function Infos(){
             </Card>
             <Card color="red">
                 <Title>Para Pagar</Title>
-                <Value>R$ 3.590,90</Value>
+                <Value>R$ {valorTotalDespesas.toFixed(2)}</Value>
             </Card>
             <Card color="blue">
                 <Title>Para Receber</Title>
-                <Value>R$ 16.789,35</Value>
+                <Value>R$ {valorTotalRecebimentos.toFixed(2)}</Value> {/* Exibe o valor total dos recebimentos */}
             </Card>
             <Card color="teal">
                 <Title>Faturamento do Mês</Title>
                 <Value>R$ {totalMes.toFixed(4)}</Value>
             </Card>
         </Line>
-    )
+    );
 }
 
 export default Infos;

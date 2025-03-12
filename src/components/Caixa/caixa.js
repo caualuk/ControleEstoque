@@ -255,9 +255,7 @@ const Caixa = () => {
 
     return (
         <Container>
-            <NavbarLeft />
             <Content>
-                <Header />
                 <ContentContainer>
                     <HeaderCaixa>
                         <Title>Caixa</Title>

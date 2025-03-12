@@ -2,8 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 
-
-
 const firebaseConfig = {
   apiKey: "AIzaSyD_qIO-amtLA_NibLDNXNLZpPTw91cmZII",
   authDomain: "deposito-f5485.firebaseapp.com",
