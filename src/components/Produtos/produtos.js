@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import NavbarLeft from "../NavbarLeft/navbarleft";
-import Header from "../Header/header";
 import TabelaProdutos from "./tabelaProdutos";
 import ActionCard from "./ActionCard";
 import AddProduto from "../AdicionarProduto/addProd.js";
@@ -28,7 +26,7 @@ const LineActions = styled.div`
 
 function Produtos() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [step, setStep] = useState(1); // 1 = Escanear código de barras, 2 = Preencher dados
+    const [step, setStep] = useState(1); 
     const [barcode, setBarcode] = useState('');
 
     const openModal = () => {

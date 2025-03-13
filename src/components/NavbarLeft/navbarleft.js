@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartSimple, faBoxesStacked, faMoneyBill, faMoneyBillTrendUp, faUserGroup, faBuilding, faCartShopping, faBell } from "@fortawesome/free-solid-svg-icons";
+import { faChartSimple, faBoxesStacked, faMoneyBill, faMoneyBillTrendUp, faBuilding, faCartShopping, faBell, faMotorcycle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const NavigationBar = styled.div`
@@ -53,6 +53,10 @@ function NavbarLeft() {
                 <FontAwesomeIcon icon={faCartShopping} />
                 Caixa
             </Link>
+            <Link to="/entregas" className="nav-options">
+                <FontAwesomeIcon icon={faMotorcycle} />
+                Entregas
+            </Link>
             <Link to="/entrada" className="nav-options">
                 <FontAwesomeIcon icon={faMoneyBillTrendUp} />
                 Receber
@@ -65,7 +69,7 @@ function NavbarLeft() {
                 <FontAwesomeIcon icon={faBuilding} />
                 Fornecedores
             </Link>
-            <Link to="/home" className="nav-options">
+            <Link to="/alerta" className="nav-options">
                 <FontAwesomeIcon icon={faBell} />
                 Alertas
             </Link>

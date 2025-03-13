@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import BarcodeScannerPesq from "../PesquisarProd/pesProd"; 
 import styled from "styled-components";
-import NavbarLeft from "../NavbarLeft/navbarleft";
-import Header from "../Header/header";
 import { db } from "../../firebase"; 
 import { query, collection, where, getDocs, updateDoc, setDoc, increment, doc } from "firebase/firestore"; 
 
@@ -262,7 +260,6 @@ const Caixa = () => {
                         <StartSaleButton onClick={handleStartSale}>Iniciar Venda</StartSaleButton>
                     </HeaderCaixa>
 
-                    {/* Renderiza o modal de leitura de código de barras se isModalOpen for true */}
                     {isModalOpen && (
                         <BarcodeScannerPesq
                             barcode={barcode}

@@ -92,7 +92,7 @@ function Infos() {
         <Line>
             <Card color="green">
                 <Title>Vendas de Hoje</Title>
-                <Value>{totalDia.toFixed(2)}</Value>
+                <Value>R$ {totalDia.toFixed(2)}</Value>
             </Card>
             <Card color="red">
                 <Title>Para Pagar</Title>
@@ -104,7 +104,7 @@ function Infos() {
             </Card>
             <Card color="teal">
                 <Title>Faturamento do Mês</Title>
-                <Value>R$ {totalMes.toFixed(4)}</Value>
+                <Value>R$ {totalMes.toFixed(2)}</Value>
             </Card>
         </Line>
     );
