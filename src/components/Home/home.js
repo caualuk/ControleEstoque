@@ -47,7 +47,10 @@ const GraphicDashboard = styled.div`
 
 const EntregasContainer = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    margin: 0px 20px 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.21);
+    padding: 15px;
 `
 
 const VerEntregasButton = styled.button`
@@ -78,6 +81,7 @@ function Home() {
                 <MainContent>
                     <Infos />
                     <EntregasContainer>
+                        Ver entregas do dia:
                         <VerEntregasButton onClick={handleVerEntregas}>
                             Ver Entregas Pendentes
                         </VerEntregasButton>

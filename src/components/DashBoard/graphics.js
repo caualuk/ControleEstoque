@@ -10,6 +10,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { calcularVendasDaSemana, obterDiasDaSemana } from "../CalcularVendas/calcularVendas.js";
+import styled from "styled-components";
+
+const GraphicContainer = styled.div`
+  width: 750px;
+  height: 300px;
+  padding: 50px;
+`
 
 const Graphic = () => {
   const [data, setData] = useState([]);
@@ -39,7 +46,7 @@ const Graphic = () => {
   }, []);
 
   return (
-    <div style={{ width: 700, height: 300 }}>
+    <GraphicContainer>
       <h3 style={{ fontSize: "1rem", marginBottom: "8px" }}>
         Vendas x Despesas (Semanal)
       </h3>
@@ -79,7 +86,7 @@ const Graphic = () => {
           />
         </AreaChart>
       </ResponsiveContainer>
-    </div>
+    </GraphicContainer>
   );
 };
 

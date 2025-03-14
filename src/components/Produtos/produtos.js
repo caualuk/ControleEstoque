@@ -3,6 +3,8 @@ import TabelaProdutos from "./tabelaProdutos";
 import ActionCard from "./ActionCard";
 import AddProduto from "../AdicionarProduto/addProd.js";
 import ProductFormModal from "../FormsModalProd/ModalForm";
+import DeleteProductModal from "../ExcluirProduto/excluirProd.js";
+import SearchProductModal from "../PesqPP/pesquisarPP.js";
 import styled from "styled-components";
 import './produtos.css';
 
@@ -25,26 +27,42 @@ const LineActions = styled.div`
 `;
 
 function Produtos() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
     const [step, setStep] = useState(1); 
     const [barcode, setBarcode] = useState('');
 
-    const openModal = () => {
-        setIsModalOpen(true);
-        setStep(1); // Sempre começa no passo 1 (escanear código de barras)
-        setBarcode(''); // Limpa o código de barras ao abrir o modal
+    // Abrir modal de adicionar produto
+    const openAddModal = () => {
+        setIsAddModalOpen(true);
+        setStep(1); 
+        setBarcode(''); 
     };
 
+    // Abrir modal de excluir produto
+    const openDeleteModal = () => {
+        setIsDeleteModalOpen(true);
+    };
+
+    // Abrir modal de pesquisar produto
+    const openSearchModal = () => {
+        setIsSearchModalOpen(true);
+    };
+
+    // Fechar todos os modais
     const closeModal = () => {
-        setIsModalOpen(false);
+        setIsAddModalOpen(false);
+        setIsDeleteModalOpen(false);
+        setIsSearchModalOpen(false);
     };
 
     // Função para capturar o código de barras
     const handleBarcodeScan = (event) => {
-        if (event.key === 'Enter') { // Quando a máquina envia o "Enter"
+        if (event.key === 'Enter') {
             event.preventDefault();
-            if (barcode.trim() !== '') { // Verifica se o código de barras não está vazio
-                setStep(2); // Avança para o próximo passo
+            if (barcode.trim() !== '') { 
+                setStep(2); 
             }
         }
     };
@@ -56,17 +74,18 @@ function Produtos() {
         closeModal();
     };
 
-
     return (
         <Container>
             <Content>
+                {/* Botões de ação */}
                 <LineActions>
-                    <ActionCard icon="plus" label="Adicionar produtos" onClick={openModal} />
-                    <ActionCard icon="trash" label="Excluir Produtos" />
-                    <ActionCard icon="magnifying-glass" label="Pesquisar produtos" />
+                    <ActionCard icon="plus" label="Adicionar produtos" onClick={openAddModal} />
+                    <ActionCard icon="trash" label="Excluir Produtos" onClick={openDeleteModal} />
+                    <ActionCard icon="magnifying-glass" label="Pesquisar produtos" onClick={openSearchModal} />
                 </LineActions>
 
-                {isModalOpen && (
+                {/* Modal de Adicionar Produto */}
+                {isAddModalOpen && (
                     step === 1 ? (
                         <AddProduto
                             barcode={barcode}
@@ -83,6 +102,17 @@ function Produtos() {
                     )
                 )}
 
+                {/* Modal de Excluir Produto */}
+                {isDeleteModalOpen && (
+                    <DeleteProductModal isOpen={isDeleteModalOpen} onClose={closeModal} />
+                )}
+
+                {/* Modal de Pesquisar Produto */}
+                {isSearchModalOpen && (
+                    <SearchProductModal isOpen={isSearchModalOpen} onClose={closeModal} />
+                )}
+
+                {/* Tabela de Produtos */}
                 <TabelaProdutos />
             </Content>
         </Container>

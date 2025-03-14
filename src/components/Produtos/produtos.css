@@ -1,16 +1,24 @@
 :root {
     --modal-background: rgba(0, 0, 0, 0.6);
-    --modal-content-bg: #fff;
+    --modal-content-bg: #d6d6d6;
     --modal-border-radius: 12px;
     --modal-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     --modal-padding: 25px;
-    --modal-max-width: 480px;
+    --modal-max-width: 800px;
     --modal-animation-duration: 0.3s;
     --modal-close-color: #555;
     --modal-close-hover-bg: rgba(0, 0, 0, 0.1);
     --modal-close-hover-color: #000;
     --modal-backdrop-blur: blur(5px);
     --font-family: Arial, sans-serif;
+    --primary-color: #007bff;
+    --primary-hover-color: #0056b3;
+    --table-header-bg: #007bff;
+    --table-header-color: #fff;
+    --table-row-even-bg: #f9f9f9;
+    --table-row-odd-bg: #fff;
+    --table-row-hover-bg: #f1f1f1;
+    --table-border-color: #ddd;
 }
 
 /* Estilos base do modal */
@@ -28,13 +36,18 @@
     backdrop-filter: var(--modal-backdrop-blur);
 }
 
+.modal-overlay {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
 /* Conteúdo do modal */
 .modal-content {
     background-color: var(--modal-content-bg);
     padding: var(--modal-padding);
     border-radius: var(--modal-border-radius);
-    width: 90%;
-    max-width: var(--modal-max-width);
+    width: 100%;
     box-shadow: var(--modal-box-shadow);
     position: relative;
     text-align: center;
@@ -112,13 +125,13 @@
 
 .modal-content input:focus,
 .modal-content select:focus {
-    border-color: #007bff;
+    border-color: var(--primary-color);
     outline: none;
 }
 
 .modal-content button[type="submit"] {
     padding: 10px;
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -128,5 +141,87 @@
 }
 
 .modal-content button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover-color);
+}
+
+/* Estilos para a tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: var(--font-family);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-color);
+}
+
+thead th {
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--table-row-even-bg);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--table-row-odd-bg);
+}
+
+tbody tr:hover {
+    background-color: var(--table-row-hover-bg);
+}
+
+tbody td {
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+/* Estilo para preços e lucro */
+tbody td:nth-child(8),
+tbody td:nth-child(9),
+tbody td:nth-child(10) {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Botão de pesquisa */
+button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--primary-hover-color);
+}
+
+/* Input de pesquisa */
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid var(--table-border-color);
+    border-radius: 5px;
+    font-size: 14px;
+    width: 200px;
+    margin-right: 10px;
 }
